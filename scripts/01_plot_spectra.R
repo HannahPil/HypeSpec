@@ -101,9 +101,12 @@ pn <- read.csv(PREDN)
 agg <- function(fun, col) tapply(pn[[col]], pn$Plot, fun)[as.character(plots)]
 first <- function(col) agg(function(v) v[1], col)
 note <- notes$notes[match(plots, notes$plot)]
+taxa <- first("Taxa")
+taxa[first("Genotype") == "Purple check"] <- "Purple" # checks have #N/A Taxa in the key
 meta <- data.frame(
   PlotID = plots, date = unlist(date), Row = first("Row"), Range = first("Range"),
-  Genotype = first("Genotype"), Accession = first("Accession"), Taxa = first("Taxa"),
+  Genotype = first("Genotype"), Accession = first("Accession"), Taxa = taxa,
+  taxa_mex = ifelse(taxa %in% c("Chal", "Dura", "Mesa", "Nobo"), "mexicana", taxa),
   notes = ifelse(is.na(note), "", note), n_scans = 5L,
   predN_mean = agg(mean, "Predicted_N"), Mdist_mean = agg(mean, "M_Distance"),
   Mdist_max = agg(max, "M_Distance"), qc_pass = qc_pass
