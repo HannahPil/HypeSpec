@@ -15,9 +15,11 @@
 # Run: Rscript scripts/05_pca_table.R   (from the repo root)
 # =============================================================================
 
-L <- read.csv("output/pca_loadings.csv")
-sc <- read.csv("output/pca_scores.csv")
-sm <- read.csv("output/pca_summary.csv")
+TAG <- Sys.getenv("TAG", "") # input/output suffix, see 02_pca.R
+tg <- function(p) sub("\\.(csv|png)$", paste0(TAG, ".\\1"), p)
+L <- read.csv(tg("output/pca_loadings.csv"))
+sc <- read.csv(tg("output/pca_scores.csv"))
+sm <- read.csv(tg("output/pca_summary.csv"))
 meta <- read.csv("output/bz_plot_meta.csv")
 m <- meta[match(sc$PlotID, meta$PlotID), ]
 day <- as.numeric(as.Date(m$date, "%m.%d.%y"))
@@ -76,6 +78,6 @@ rows <- lapply(paste0("PC", 1:10), function(k) {
   )
 })
 tab <- do.call(rbind, rows)
-write.csv(tab, "output/pca_component_table.csv", row.names = FALSE)
+write.csv(tab, tg("output/pca_component_table.csv"), row.names = FALSE)
 print(tab[, c("component", "variance_explained_pct", "peak_loading_nm", "feature_at_peak",
               "spearman_rho_predicted_N", "spearman_rho_scan_day")], row.names = FALSE)

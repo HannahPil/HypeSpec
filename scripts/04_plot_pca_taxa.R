@@ -12,8 +12,10 @@ suppressMessages(library(ggplot2))
 set.seed(1) # fixed random draw order
 
 MEXICANA <- c("Chal", "Dura", "Mesa", "Nobo")
-sc <- read.csv("output/pca_scores.csv")
-sm <- read.csv("output/pca_summary.csv")
+TAG <- Sys.getenv("TAG", "") # input/output suffix, see 02_pca.R
+tg <- function(p) sub("\\.(csv|png)$", paste0(TAG, ".\\1"), p)
+sc <-read.csv(tg("output/pca_scores.csv"))
+sm <- read.csv(tg("output/pca_summary.csv"))
 meta <- read.csv("output/bz_plot_meta.csv")
 sc$group <- meta$taxa_mex[match(sc$PlotID, meta$PlotID)]
 lev <- c("B73", "mexicana", "Bals", "Zdip", "Zlux", "Hueh", "Purple")
@@ -34,7 +36,8 @@ p <- ggplot(sc[sample(nrow(sc)), ], aes(PC1, PC2, colour = group)) + # random dr
     title = "Principal components 1 and 2 of plot-level leaf reflectance by taxon, CLY25-B5 block 2",
     subtitle = sprintf(paste0(
       "PCA (centred, unscaled) of splice-corrected reflectance, 350–2500 nm, mean of 5 scans per plot; ",
-      "n = %d plots"), nrow(sc))
+      "n = %d plots%s"), nrow(sc),
+      if (nzchar(TAG)) "; senesced (high-PC1) plots excluded" else "")
   ) +
   theme_minimal(base_size = 11) +
   theme(
@@ -45,4 +48,4 @@ p <- ggplot(sc[sample(nrow(sc)), ], aes(PC1, PC2, colour = group)) + # random dr
     plot.subtitle = element_text(colour = "grey35", size = 9),
     plot.title.position = "plot"
   )
-ggsave("output/pca_pc1_pc2_taxa.png", p, width = 9.5, height = 6.5, dpi = 200)
+ggsave(tg("output/pca_pc1_pc2_taxa.png"), p, width = 9.5, height = 6.5, dpi = 200)
