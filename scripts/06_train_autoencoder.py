@@ -40,15 +40,26 @@ p.add_argument("--patience", type=int, default=100)  # paper; code default 50
 p.add_argument("--prop_split", type=float, default=5 / 6)  # paper 5:1; code default 0.8
 p.add_argument("--learning_rate", type=float, default=0.1)
 p.add_argument("--random_seed", type=int, default=0)
+p.add_argument("--exclude", help="CSV with a PlotID column; those plots are dropped")
+p.add_argument("--tag", default="", help="suffix for the output folder and file tag, e.g. _green")
 a = p.parse_args()
 
 tf_keras.utils.set_random_seed(a.random_seed)
-out = f"output/ae_{a.num_variables}lv"
+out = f"output/ae_{a.num_variables}lv{a.tag}"
 os.makedirs(out, exist_ok=True)
+dataset = a.dataset
+if a.exclude:
+    import pandas as pd
+
+    d = pd.read_csv(a.dataset)
+    d = d[~d.PlotID.isin(pd.read_csv(a.exclude).PlotID)]
+    dataset = os.path.join(out, "input_spectra.csv.gz")
+    d.to_csv(dataset, index=False, compression="gzip")
+    print(f"exclude: {len(d)} plots remain -> {dataset}", flush=True)
 trainer = autoencoder_trainer.AutoencoderTrainer(
-    dataset_path=a.dataset, codings_size=a.num_variables, epochs=a.epochs,
+    dataset_path=dataset, codings_size=a.num_variables, epochs=a.epochs,
     patience=a.patience, learning_rate=a.learning_rate, random_seed=a.random_seed,
-    prop_split=a.prop_split, output_loc=out, ts=f"bz_{a.num_variables}lv",
+    prop_split=a.prop_split, output_loc=out, ts=f"bz_{a.num_variables}lv{a.tag}",
 )
 print(f"train {len(trainer.df_train)} / validation {len(trainer.df_validation)} plots", flush=True)
 trainer.train()

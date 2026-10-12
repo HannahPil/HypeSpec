@@ -21,13 +21,13 @@
 # =============================================================================
 suppressMessages(library(SpATS))
 
-meta <- read.csv("output/bz_plot_meta.csv")
-sets <- list(
-  HSPC = read.csv("output/pca_scores.csv"),
-  HSTLV = read.csv("output/tross_pretrained_lvs.csv"),
-  HSRLV = read.csv("output/ae_10lv/LVs_Reflectance_Data_bz_10lv.csv")
-)
-dir.create("output/blues", showWarnings = FALSE)
+source("scripts/component_sets.R") # meta, sets, tg(); TAG / EXCLUDE env
+# Trait prefixes; a tagged run (e.g. _green) gets a "G" so its traits never
+# collide with the all-plot traits once staged in ZeaL_QTL (HSGPC1, ...).
+G <- if (nzchar(TAG)) "G" else ""
+names(sets) <- paste0("HS", G, c("PC", "TLV", "RLV"))
+BLUE_DIR <- paste0("output/blues", TAG)
+dir.create(BLUE_DIR, showWarnings = FALSE)
 
 for (prefix in names(sets)) {
   d <- sets[[prefix]]
@@ -50,7 +50,7 @@ for (prefix in names(sets)) {
     out <- out[order(out$Genotype), ]
     names(out)[2] <- paste0(trait, "_cly25")
     out[[paste0(trait, "_CLY_mean")]] <- out[[2]]
-    f <- sprintf("output/blues/pheno_%s_cly_blue.csv", tolower(trait))
+    f <- sprintf("%s/pheno_%s_cly_blue.csv", BLUE_DIR, tolower(trait))
     write.csv(out, f, row.names = FALSE)
     cat(sprintf("%-8s %d genotype BLUEs -> %s\n", trait, nrow(out), basename(f)))
   }

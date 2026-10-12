@@ -24,26 +24,9 @@
 # =============================================================================
 suppressMessages(library(SpATS))
 
-# Optional sensitivity run: EXCLUDE_PC1_GT=5 drops plots with PC1 above 5 (the
-# outlying high-PC1 group) and writes output/heritability_pc1_le<cut>.csv.
-CUT <- as.numeric(Sys.getenv("EXCLUDE_PC1_GT", NA))
-OUT <- if (is.na(CUT)) "output/heritability.csv" else sprintf("output/heritability_pc1_le%g.csv", CUT)
-
-meta <- read.csv("output/bz_plot_meta.csv")
-if (!is.na(CUT)) {
-  pc <- read.csv("output/pca_scores.csv")
-  drop <- pc$PlotID[pc$PC1 > CUT]
-  meta <- meta[!meta$PlotID %in% drop, ]
-  cat(sprintf("excluding %d plots with PC1 > %g (%d B73); %d plots remain\n",
-              length(drop), CUT, sum(read.csv("output/bz_plot_meta.csv")$Genotype[
-                match(drop, read.csv("output/bz_plot_meta.csv")$PlotID)] == "B73"), nrow(meta)))
-}
-sets <- list(
-  PCA = read.csv("output/pca_scores.csv"),
-  `Tross encoder` = read.csv("output/tross_pretrained_lvs.csv"),
-  `Retrained autoencoder` = read.csv("output/ae_10lv/LVs_Reflectance_Data_bz_10lv.csv"),
-  Reference = data.frame(PlotID = meta$PlotID, Predicted_N = meta$predN_mean)
-)
+source("scripts/component_sets.R") # meta, sets, tg(); TAG / EXCLUDE env
+OUT <- tg("output/heritability.csv")
+sets$Reference <- data.frame(PlotID = meta$PlotID, Predicted_N = meta$predN_mean)
 
 fit_h2 <- function(y, plot_id) {
   keep <- plot_id %in% meta$PlotID
