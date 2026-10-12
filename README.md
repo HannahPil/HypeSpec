@@ -10,25 +10,26 @@ ear, CLY25-B5 block 2 (921 plots, 5 scans per plot, 2025-07-18 to 07-26).
 
 ```mermaid
 flowchart TD
-    A["Raw scans (.asd)<br/>4,615 FieldSpec4 scans, 350–2500 nm"] --> B["Indico Pro: Asd to Spc<br/>log(1/R) per scan (.spc)"]
-    B --> C["01_plot_spectra.R<br/>R = 10^−log(1/R) · splice correction at 1000 / 1800 nm<br/>mean of 5 scans per plot · reflectance 0–1 check"]
-    M["Collection workbook (BZ-remap)<br/>predicted-N plot key"] --> C
-    C --> D[("bz_plot_reflectance.csv.gz<br/>921 plots × 2151 bands")]
-    C --> E[("bz_plot_meta.csv<br/>genotype, taxa, notes,<br/>Predicted_N, M-distance")]
+    A["Raw scans"] --> B["Convert to reflectance"]
+    B --> C["Splice correction"]
+    C --> C2["Plot means"]
+    M["Plot key"] --> E
+    C2 --> D[("Plot spectra")]
+    C2 --> E[("Plot metadata")]
 
-    D --> P["02_pca.R<br/>PCA, 10 PCs"]
-    D --> T["07_tross_pretrained.py<br/>Tross trained encoder, 10 LVs"]
-    D --> R["06_train_autoencoder.py<br/>autoencoder retrained on ZEAL, 10 LVs"]
+    D --> P["PCA"]
+    D --> T["Tross encoder"]
+    D --> R["Retrained autoencoder"]
 
-    P --> P2["03–05: PCA figures and<br/>component table"]
+    P --> P2["PCA figures"]
     E --> P2
 
-    P --> H["SpATS BLUEs and H² per component<br/>(planned)"]
+    P --> H["Heritability"]
     T --> H
     R --> H
     E --> H
-    H --> Q["R/qtl scans and peaks in ZeaL_QTL<br/>(planned)"]
-    E --> G["Annotation: Spearman ρ with Predicted_N<br/>(planned for LVs)"]
+    H --> Q["QTL mapping"]
+    E --> G["Predicted N correlation"]
     T --> G
     R --> G
 
