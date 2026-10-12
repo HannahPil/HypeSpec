@@ -10,26 +10,17 @@ ear, CLY25-B5 block 2 (921 plots, 5 scans per plot, 2025-07-18 to 07-26).
 
 ```mermaid
 flowchart TD
-    A["Raw scans"] --> B["Convert to reflectance"]
-    B --> C["Splice correction"]
-    C --> C2["Plot means"]
-    M["Plot key"] --> E
-    C2 --> D[("Plot spectra")]
-    C2 --> E[("Plot metadata")]
+    A["Raw scans"] --> B["Preprocessing"]
 
-    D --> P["PCA"]
-    D --> T["Tross encoder"]
-    D --> R["Retrained autoencoder"]
-
-    P --> P2["PCA figures"]
-    E --> P2
+    B --> P["PCA"]
+    B --> T["Tross encoder"]
+    B --> R["Retrained autoencoder"]
 
     P --> H["Heritability"]
     T --> H
     R --> H
-    E --> H
     H --> Q["QTL mapping"]
-    E --> G["Predicted N correlation"]
+    P --> G["Predicted N correlation"]
     T --> G
     R --> G
 
