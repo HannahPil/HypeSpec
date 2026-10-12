@@ -15,9 +15,9 @@ flowchart TD
 
     subgraph DR["Dimension reduction"]
         direction LR
-        P["PCA"]
-        T["Tross encoder"]
-        R["Retrained autoencoder"]
+        P["PCA<br/>(10 PCs)"]
+        T["Tross encoder<br/>(10 LVs)"]
+        R["Retrained<br/>autoencoder<br/>(10 LVs)"]
     end
 
     DR --> G["Predicted N correlation"]
