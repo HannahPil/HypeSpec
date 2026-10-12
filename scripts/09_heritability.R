@@ -24,7 +24,20 @@
 # =============================================================================
 suppressMessages(library(SpATS))
 
+# Optional sensitivity run: EXCLUDE_PC1_GT=5 drops plots with PC1 above 5 (the
+# outlying high-PC1 group) and writes output/heritability_pc1_le<cut>.csv.
+CUT <- as.numeric(Sys.getenv("EXCLUDE_PC1_GT", NA))
+OUT <- if (is.na(CUT)) "output/heritability.csv" else sprintf("output/heritability_pc1_le%g.csv", CUT)
+
 meta <- read.csv("output/bz_plot_meta.csv")
+if (!is.na(CUT)) {
+  pc <- read.csv("output/pca_scores.csv")
+  drop <- pc$PlotID[pc$PC1 > CUT]
+  meta <- meta[!meta$PlotID %in% drop, ]
+  cat(sprintf("excluding %d plots with PC1 > %g (%d B73); %d plots remain\n",
+              length(drop), CUT, sum(read.csv("output/bz_plot_meta.csv")$Genotype[
+                match(drop, read.csv("output/bz_plot_meta.csv")$PlotID)] == "B73"), nrow(meta)))
+}
 sets <- list(
   PCA = read.csv("output/pca_scores.csv"),
   `Tross encoder` = read.csv("output/tross_pretrained_lvs.csv"),
@@ -33,7 +46,9 @@ sets <- list(
 )
 
 fit_h2 <- function(y, plot_id) {
-  m <- meta[match(plot_id, meta$PlotID), ]
+  keep <- plot_id %in% meta$PlotID
+  y <- y[keep]
+  m <- meta[match(plot_id[keep], meta$PlotID), ]
   d <- data.frame(Genotype = factor(m$Genotype), Row = as.numeric(m$Row),
                   Range = as.numeric(m$Range), y = y)
   d$Rf <- factor(d$Range)
@@ -56,4 +71,4 @@ for (s in names(sets)) {
     cat(sprintf("%-22s %-12s H2 = %.3f\n", s, k, r[["H2"]]))
   }
 }
-write.csv(do.call(rbind, rows), "output/heritability.csv", row.names = FALSE)
+write.csv(do.call(rbind, rows), OUT, row.names = FALSE)
