@@ -20,9 +20,8 @@ flowchart TD
         R["Retrained<br/>autoencoder<br/>(10 LVs)"]
     end
 
-    DR --> G["Predicted N correlation"]
     DR --> H["Heritability"]
-    DR --> BL["Genotype BLUEs<br/>(spatial correction)"]
+    DR --> BL["Genotype BLUEs<br/>(spatial<br/>correction)"]
     BL --> Q["QTL mapping"]
 ```
 
