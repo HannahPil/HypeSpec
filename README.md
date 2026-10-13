@@ -15,9 +15,7 @@ flowchart TD
 
     subgraph DR["Dimension reduction"]
         direction LR
-        P["PCA<br/>(10 PCs)"]
-        T["Tross encoder<br/>(10 LVs)"]
-        R["Retrained<br/>autoencoder<br/>(10 LVs)"]
+        P["PCA<br/>(10 PCs)"] ~~~ R["Autoencoder<br/>(10 LVs)"]
     end
 
     DR --> H["Heritability"]
