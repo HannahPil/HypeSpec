@@ -10,7 +10,7 @@ ear, CLY25-B5 block 2 (921 plots, 5 scans per plot, 2025-07-18 to 07-26).
 
 ```mermaid
 flowchart TD
-    A["Raw scans"] --> B["Preprocessing:<br/>convert to reflectance, splice correction"]
+    A["Raw scans"] --> B["Preprocessing:<br/>convert to<br/>reflectance,<br/>splice correction"]
     B --> DR
 
     subgraph DR["Dimension reduction"]
