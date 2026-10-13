@@ -22,10 +22,8 @@ flowchart TD
 
     DR --> G["Predicted N correlation"]
     DR --> H["Heritability"]
-    H --> Q["QTL mapping"]
-
-    classDef planned stroke-dasharray: 5 5
-    class H,Q,G planned
+    DR --> BL["Genotype BLUEs<br/>(spatial correction)"]
+    BL --> Q["QTL mapping"]
 ```
 
 ## Layout
