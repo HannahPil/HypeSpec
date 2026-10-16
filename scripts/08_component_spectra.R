@@ -14,7 +14,7 @@
 #      output/tross_pretrained_lvs.csv, output/pca_loadings.csv (all-plot PC8)
 # Out: output/component_spectra<TAG>.csv (wavelength x component r),
 #      output/component_spectra<TAG>.png, printed summary
-# Run: Rscript scripts/13_component_spectra.R   (from the repo root)
+# Run: Rscript scripts/08_component_spectra.R   (from the repo root)
 # =============================================================================
 suppressMessages(library(ggplot2))
 TAG <- Sys.getenv("TAG", "_green")

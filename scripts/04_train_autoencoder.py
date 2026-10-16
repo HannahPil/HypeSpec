@@ -15,7 +15,7 @@ Two shims, neither changes the method:
 
 In : output/bz_plot_reflectance.csv.gz
 Out: output/ae_<N>lv/  (LVs_Reflectance_Data_<tag>.csv, losses, weights, model)
-Run: .venv/Scripts/python scripts/06_train_autoencoder.py [--num_variables 10]
+Run: .venv/Scripts/python scripts/04_train_autoencoder.py [--num_variables 10]
 """
 import argparse
 import os

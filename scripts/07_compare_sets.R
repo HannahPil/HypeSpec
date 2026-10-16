@@ -10,7 +10,7 @@
 #
 # In : output/heritability{,_green}.csv, output/component_correlations{,_green}.csv
 # Out: output/compare_sets_by_method.csv, output/compare_sets_by_component.csv
-# Run: Rscript scripts/12_compare_sets.R   (from the repo root)
+# Run: Rscript scripts/07_compare_sets.R   (from the repo root)
 # =============================================================================
 
 load_set <- function(tag, label) {

@@ -4,7 +4,7 @@
 # leaf absorption features marked (for presentation)
 # In : output/bz_plot_reflectance.csv.gz, output/outlier_group_plots.csv
 # Out: output/spectrum_regions.png
-# Run: Rscript scripts/14_spectrum_regions_figure.R   (from the repo root)
+# Run: Rscript scripts/09_spectrum_regions_figure.R   (from the repo root)
 # =============================================================================
 suppressMessages(library(ggplot2))
 

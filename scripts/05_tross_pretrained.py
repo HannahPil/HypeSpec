@@ -16,7 +16,7 @@ In : data/tross2024/weights.h5                       (figshare 24808491 v4)
      data/tross2024/maize_2020_unl_latentVariables.csv
      output/bz_plot_reflectance.csv.gz
 Out: output/tross_pretrained_lvs.csv   (PlotID, LV1..LV10)
-Run: .venv/Scripts/python scripts/07_tross_pretrained.py
+Run: .venv/Scripts/python scripts/05_tross_pretrained.py
 """
 import h5py
 import numpy as np

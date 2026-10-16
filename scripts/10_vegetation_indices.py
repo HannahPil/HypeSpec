@@ -13,7 +13,7 @@ In : output/bz_plot_reflectance.csv.gz, output/bz_plot_meta.csv,
      output/outlier_group_plots.csv
 Out: output/vegetation_indices_table1.xlsx  (sheets: indices, definitions)
      output/vegetation_indices_table1.csv   (indices sheet only)
-Run: .venv/Scripts/python scripts/16_vegetation_index_table.py
+Run: .venv/Scripts/python scripts/10_vegetation_indices.py
 """
 import pandas as pd
 

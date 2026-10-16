@@ -13,7 +13,7 @@
 #      output/bz_plot_meta.csv
 # Out: output/outlier_group_spectra.png, output/outlier_group_fieldmap.png,
 #      output/outlier_group_summary.txt, output/outlier_group_plots.csv
-# Run: Rscript scripts/11_outlier_group.R   (from the repo root)
+# Run: Rscript scripts/03_senesced_group.R   (from the repo root)
 # =============================================================================
 suppressMessages(library(ggplot2))
 set.seed(1)
