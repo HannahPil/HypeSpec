@@ -54,4 +54,5 @@ Run in order. Steps marked † also run on the non-senesced plots with
 | `09_spectrum_regions_figure.R` | Mean spectrum with detector ranges and absorption features |
 | `10_vegetation_indices.py` | 28 vegetation indices (Table 1 of the stay-green paper) → spreadsheet |
 | `11_vegetation_index_genetics.R` | NDVI/NDRE and Table-1 indices: H² and genotype BLUEs |
+| `12_int_panel.R` | Pre-specified 8-trait panel, rank-INT of BLUEs |
 | `lib.R` | Shared helpers: TAG/EXCLUDE, SpATS fits, BLUE writer, feature lookup |
